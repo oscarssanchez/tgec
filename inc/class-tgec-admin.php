@@ -91,9 +91,42 @@ class Tgec_admin{
     public function tgec_admin_page_add_new() {
 
         $this->tgec_admin_page_header( 'new-event' );
+
+        $this->pseudo_meta_box(
+                'add-new-event',
+                'Add New Event',
+                $this->tgec_edit_form()
+        );
+
     }
 
+    public function tgec_edit_form(){
+        $display =<<< EDITFORM
+        <form action="#event_form" method="post" id="event_form">
+            <h3>You can enter your new Event here:</h3>
+            <ul>
+            <li><input type="text" name="event_title" id="event_title" placeholder="Event Title"/></li>
+            <li><textarea name="event_details" placeholder="Event Details" cols="50" rows="5"></textarea></li>
+            <li><input type="submit" name="submit" value="Save event" /></li>
+            </ul>
+        </form>
+EDITFORM;
+        return $display;
+    }
+
+    /**Renders the pseudo-metabox to display the content or add/edit events **/
+    private function pseudo_meta_box($id, $title = "", $content = ""){
+        ?>
+        <div id="poststuff" class="wrap meta-box-holder">
+            <div id="normal-sortables" class="meta-box-sortables">
+                <div id="<?php echo $id; ?>" class="postbox " >
+                    <h3 class="hndle" style="cursor:default;"><span><?php echo $title; ?></span></h3>
+                    <div class="inside">
+                        <?php echo $content; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
 }
-
-
-
