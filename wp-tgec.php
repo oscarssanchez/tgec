@@ -12,14 +12,9 @@ Domain Path: /languages
 
 /*Registers the plugin */
 
-
-
 require_once( 'inc/class-tgec.php' );
 require_once( 'inc/class-tgec-admin.php');
+require_once( 'inc/class-tgec-db.php');
 
 register_activation_hook( __FILE__, array( 'Tgec', 'activate' ) );
 add_action( 'plugins_loaded', array( 'Tgec', 'load' ) );
-
-
-
-
