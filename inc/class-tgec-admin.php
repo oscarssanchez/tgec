@@ -90,6 +90,8 @@ class Tgec_admin{
     /** Renders Add New Event Admin Page */
     public function tgec_admin_page_add_new() {
 
+        global $tgec_db;
+
         $this->tgec_admin_page_header( 'new-event' );
 
         $this->pseudo_meta_box(
@@ -97,6 +99,8 @@ class Tgec_admin{
                 'Add New Event',
                 $this->tgec_edit_form()
         );
+
+        $tgec_db->put_event();
 
     }
 

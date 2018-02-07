@@ -12,14 +12,16 @@ class Tgec_DB{
 
     private $db, $table_name;
 
-    public function __construct(){
+    public function __construct()
+    {
         global $wpdb;
         $this->db = $wpdb;
         $this->table_name = $this->db->prefix . "tgec";
     }
 
-    public static function tgec_db_install(){
-        if( ! current_user_can( 'administrator' ) ) {
+    public static function tgec_db_install()
+    {
+        if (!current_user_can('administrator')) {
             return;
         }
 
@@ -36,10 +38,34 @@ class Tgec_DB{
   PRIMARY KEY (id)
 ) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta( $sql );
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
     }
 
-    public function
+    public  function put_event(){
+        global $wpdb;
+
+        if ( isset( $_POST[ "submit" ] ) && $_POST[ "event_title" ] && $_POST[ "event_details" ] ){
+            $table = $wpdb->prefix . "tgec";
+            $title = $_POST[ "event_title" ];
+            $details = $_POST[ "event_details" ];
+            $wpdb->insert(
+                $table,
+                array(
+                    'title' => $title,
+                    'details' => $details,
+                    'time' => current_time( 'mysql' ),
+                )
+            );
+            echo esc_html( 'Event Created!' );
+        }
+        if ( isset( $_POST[ "submit" ] ) && $_POST[ "event_title" ] == '' ) {
+            echo esc_html( 'Please enter a title for your event. ' );
+        }
+        if ( isset( $_POST[ "submit" ] ) && $_POST[ "event_details" ] == '' ) {
+            echo esc_html( 'Please enter your event details.' );
+        }
+
+    }
 }
 
