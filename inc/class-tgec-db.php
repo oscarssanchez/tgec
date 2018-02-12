@@ -12,12 +12,12 @@ class Tgec_DB{
 
     private $db, $table_name;
 
-    public function __construct()
-    {
+    public function __construct() {
         global $wpdb;
         $this->db = $wpdb;
         $this->table_name = $this->db->prefix . "tgec";
     }
+
 
     public static function tgec_db_install()
     {
@@ -42,11 +42,13 @@ class Tgec_DB{
         dbDelta($sql);
     }
 
+    //DB SETTER, GETTER METHODS
+
     public  function put_event(){
         global $wpdb;
 
         if ( isset( $_POST[ "submit" ] ) && $_POST[ "event_title" ] && $_POST[ "event_details" ] ){
-            $table = $wpdb->prefix . "tgec";
+            $table = $this->table_name;
             $title = $_POST[ "event_title" ];
             $details = $_POST[ "event_details" ];
             $wpdb->insert(
@@ -68,25 +70,16 @@ class Tgec_DB{
 
     }
 
-    public static function get_events( $per_page = 5, $page_number = 1 ){
+    //Fetches event entries from the database
 
-        global $wpdb;
+    public function get_events_array() {
 
-        $table_name = $wpdb->prefix . "tgec";
+        $sql = "SELECT `ID`, `title`, `details`, `time`
+			FROM " . $this->table_name;
 
-        $sql = "SELECT * FROM $table_name";
-
-        if ( ! empty( $_REQUEST[ 'orderby' ] ) ) {
-            $sql .= ' ORDER BY ' . esc_sql( $_REQUEST[ 'orderby' ] );
-            $sql .= ! empty( $_REQUEST[ 'order'] ) ? ' ' . esc_sql( $_REQUEST[ 'order' ] ) : ' ASC';
-        }
-
-        $sql .= " LIMIT $per_page";
-
-        $sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
-
-        $result = $wpdb->get_results( $sql, 'ARRAY_A');
-        
-        return $result;
+        if($quotes = $this->db->get_results($sql, ARRAY_A) )
+            return $quotes;
+        else
+            return array();
     }
 }

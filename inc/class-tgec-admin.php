@@ -56,11 +56,16 @@ class Tgec_admin{
 
     /** Renders the whole admin page */
     public function tgec_admin_page_main(){
-        $this->tgec_admin_page_header();
+        $event_list = new Tgec_admin_list();
+
+        $this->tgec_admin_page_header( 'events-list');
+        $event_list->prepare_items();
+        $event_list->display();
+
     }
 
     /** Renders the Admin page Header */
-    private function tgec_admin_page_header( $active_page = 'event-list' ){
+    private function tgec_admin_page_header( $active_page = 'events-list' ){
         ?>
         <div id="tge-admin-page" class="wrap">
             <header>
@@ -69,7 +74,7 @@ class Tgec_admin{
                     <?php
                     if( current_user_can( 'administrator' ) || ( 'editor' ) ){
                         ?>
-                        <a href="<?php echo $this->admin_url;?>" class="nav-tab<?php echo ( 'event-list' == $active_page )? ' nav-tab-active' : '';?>">
+                        <a href="<?php echo $this->admin_url;?>" class="nav-tab<?php echo ( 'events-list' == $active_page )? ' nav-tab-active' : '';?>">
                             <?php echo _e('All events'); ?>
                         </a>
                         <a href="<?php echo $this->admin_add_new_url;?>" class="nav-tab<?php echo ( 'new-event' == $active_page )? ' nav-tab-active' : '';?>">
