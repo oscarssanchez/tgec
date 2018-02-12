@@ -67,5 +67,26 @@ class Tgec_DB{
         }
 
     }
-}
 
+    public static function get_events( $per_page = 5, $page_number = 1 ){
+
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . "tgec";
+
+        $sql = "SELECT * FROM $table_name";
+
+        if ( ! empty( $_REQUEST[ 'orderby' ] ) ) {
+            $sql .= ' ORDER BY ' . esc_sql( $_REQUEST[ 'orderby' ] );
+            $sql .= ! empty( $_REQUEST[ 'order'] ) ? ' ' . esc_sql( $_REQUEST[ 'order' ] ) : ' ASC';
+        }
+
+        $sql .= " LIMIT $per_page";
+
+        $sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
+
+        $result = $wpdb->get_results( $sql, 'ARRAY_A');
+        
+        return $result;
+    }
+}
